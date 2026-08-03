@@ -6,7 +6,7 @@
 
 <!-- TODO: Update these for your repo! -->
 
-[![All Specs](https://github.com/saasbook/hw-agile-iterations/actions/workflows/specs.yml/badge.svg)](https://github.com/saasbook/hw-agile-iterations/actions/workflows/specs.yml)
+[![All Specs](https://github.com/viamoore-berkeley/su26-chips-10.5-11/actions/workflows/specs.yml/badge.svg)](https://github.com/saasbook/hw-agile-iterations/actions/workflows/specs.yml)
 
 ---
 
@@ -23,7 +23,7 @@ Team Members:
 ActionMap is an app that allows users to learn more about their representatives,
 political events in their area as well as aggregate, share and view news items in their locality.
 
-<!-- [![codecov](https://codecov.io/gh/saasbook/hw-agile-iterations/branch/master/graph/badge.svg?token=SGYCvQX4Us)](https://codecov.io/gh/saasbook/hw-agile-iterations) -->
+<!-- [![codecov](https://codecov.io/gh/viamoore-berkeley/su26-chips-10.5-11/branch/master/graph/badge.svg?token=SGYCvQX4Us)](https://codecov.io/gh/saasbook/hw-agile-iterations) -->
 
 ## ActionMap: Getting Started
 
