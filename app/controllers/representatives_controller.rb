@@ -6,6 +6,10 @@ class RepresentativesController < ApplicationController
   end
 
   def show
-    render 'show'
+    @representative = Representative.find_by(name: params[:name])
+  end
+
+  def search
+  
   end
 end
