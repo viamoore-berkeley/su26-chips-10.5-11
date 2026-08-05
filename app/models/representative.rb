@@ -47,11 +47,15 @@ class Representative < ApplicationRecord
     legislators.map { |official| find_rep(official) }
   end
 
-  # Find an existing representative by ocdid (or build a new one), then populate
-  # it from the Geocodio payload. Re-searching a district updates the existing
-  # record instead of creating a duplicate.
+  # Find an existing representative by bioguide_id (or build a new one), then
+  # populate it from the Geocodio payload. Re-searching a district updates the
+  # existing record instead of creating a duplicate. bioguide_id lives in the
+  # references block and is unique per member; fall back to a new record when it
+  # is missing so distinct officials never collapse onto one row.
   def self.find_rep(official)
-    find_or_initialize_by(ocdid: official['govtrack_id']).update_from_geocodio(official)
+    bioguide = official.dig('references', 'bioguide_id')
+    rep = bioguide.present? ? find_or_initialize_by(bioguide_id: bioguide) : new
+    rep.update_from_geocodio(official)
   end
 
   def self.photo_url_for(bioguide_id)
@@ -69,7 +73,7 @@ class Representative < ApplicationRecord
     {
       name: "#{bio['first_name']} #{bio['last_name']}".strip,
       title: official['type'],
-      ocdid: official['govtrack_id'],
+      ocdid: refs['govtrack_id'],
       party: bio['party'],
       bioguide_id: refs['bioguide_id'],
       photo_url: photo_url_for(refs['bioguide_id']),
