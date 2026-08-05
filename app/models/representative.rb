@@ -34,23 +34,39 @@ class Representative < ApplicationRecord
     reps = []
     response = rep_info['results'][0]['response']
     fields = response['results'][0]['fields']
-    @legislators = fields['congressional_districts'][0]['current_legislators']
+    # checks if fields and cong_districts exist/filled
+    districts = if fields.present? && fields['congressional_districts'].present?
+                  # Assign cong dist in the search to districts
+                  fields['congressional_districts']
+                else
+                  # if no districts are found in search
+                  []
+                end
 
-    @legislators.each_with_index do |official, _index|
-      official['name'] = "#{official.dig('bio', 'first_name')} #{official.dig('bio', 'last_name')}"
-      title = official['type']
-      # Inspect all the data that's there to make part 1 easier.
-      # Rails.logger.debug official
-      # official.dig('bio', 'party')
-      ocdid = official['govtrack_id']
-      reps << Representative.find_rep(official, ocdid: ocdid, title: title)
+    districts.each do |district|
+      # checks if districts and curr legis exist/filled
+      @legislators = if district.present? && district['current_legislators'].present?
+                       # Assigns all legislators for the district
+                       district['current_legislators']
+                     else
+                       []
+                     end
+      @legislators.each_with_index do |official, _index|
+        official['name'] = "#{official.dig('bio', 'first_name')} #{official.dig('bio', 'last_name')}"
+        title = official['type']
+        # Inspect all the data that's there to make part 1 easier.
+        # Rails.logger.debug official
+        # official.dig('bio', 'party')
+        ocdid = official['govtrack_id']
+        reps << Representative.find_rep(official, ocdid: ocdid, title: title)
+      end
     end
-    reps
+    # returns all reps with a uniq id so multiple represenetatives arent shown more than once on the list
+    reps.uniq(&:id)
   end
 
   def self.find_rep(official, title: '', ocdid: '')
     rep = Representative.find_or_initialize_by(ocdid: ocdid)
-
     rep.name = official['name'] if official['name']
     rep.title = title if title.present?
     rep.party = official['party'] if official['party']
