@@ -32,23 +32,23 @@ class Representative < ApplicationRecord
     reps = []
     response = rep_info['results'][0]['response']
     fields = response['results'][0]['fields']
-    #checks if fields and cong_districts exist/filled
-    if fields.present? && fields['congressional_districts'].present?
-      #Assign cong dist in the search to districts
-      districts = fields['congressional_districts']
-    else
-      #if no districts are found in search
-      districts = []
-    end
-    
+    # checks if fields and cong_districts exist/filled
+    districts = if fields.present? && fields['congressional_districts'].present?
+                  # Assign cong dist in the search to districts
+                  fields['congressional_districts']
+                else
+                  # if no districts are found in search
+                  []
+                end
+
     districts.each do |district|
-      #checks if districts and curr legis exist/filled
-      if district.present? && district['current_legislators'].present?
-        #Assigns all legislators for the district
-        @legislators = district['current_legislators']
-      else
-        @legislators = []
-      end
+      # checks if districts and curr legis exist/filled
+      @legislators = if district.present? && district['current_legislators'].present?
+                       # Assigns all legislators for the district
+                       district['current_legislators']
+                     else
+                       []
+                     end
       @legislators.each_with_index do |official, _index|
         official['name'] = "#{official.dig('bio', 'first_name')} #{official.dig('bio', 'last_name')}"
         title = official['type']
@@ -59,7 +59,7 @@ class Representative < ApplicationRecord
         reps << Representative.find_rep(official, ocdid: ocdid, title: title)
       end
     end
-    #returns all reps with a uniq id so multiple represenetatives arent shown more than once on the list
+    # returns all reps with a uniq id so multiple represenetatives arent shown more than once on the list
     reps.uniq(&:id)
   end
 
