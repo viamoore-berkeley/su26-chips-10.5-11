@@ -50,7 +50,7 @@ class Representative < ApplicationRecord
 
   def self.find_rep(official, title: '', ocdid: '')
     rep = Representative.find_or_initialize_by(ocdid: ocdid)
-    
+
     rep.name = official['name'] if official['name']
     rep.title = title if title.present?
     rep.party = official['party'] if official['party']

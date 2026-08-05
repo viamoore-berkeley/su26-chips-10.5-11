@@ -59,9 +59,9 @@ describe Representative do
   end
 
   describe 'update_from_geocodio' do
-    it "updates represenative fields from geocodio correctly" do
-      rep = Representative.create!(
-        name: 'Jane Doe', 
+    it 'updates represenative fields from geocodio correctly' do
+      rep = described_class.create!(
+        name: 'Jane Doe',
         ocdid: '1',
         title: 'old title',
         party: 'old party',
@@ -69,7 +69,7 @@ describe Representative do
       )
 
       official = {
-      'type' => 'new title',
+        'type' => 'new title',
       'govtrack_id' => '2',
       'party' => 'new party',
       'photo_url' => 'new.jpg'
@@ -83,4 +83,3 @@ describe Representative do
     end
   end
 end
-
