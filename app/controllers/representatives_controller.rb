@@ -12,3 +12,4 @@ class RepresentativesController < ApplicationController
   def search
   
   end
+end
