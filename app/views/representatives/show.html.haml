@@ -1,4 +1,51 @@
-.container-fluid.bg-light
-  .row.text-center
-    .col-12
-      %h1.text-center= @representative&.name
+.container.my-4
+  .row
+    .col-12.col-md-3.text-center.mb-3.mb-md-0
+      - if @representative.photo_url.present?
+        = image_tag @representative.photo_url, alt: @representative.name, class: 'img-fluid', onerror: 'this.hidden=true'
+      - else
+        %i.fas.fa-user.fa-6x.text-secondary
+    .col-12.col-md-9
+      %h1.h3.mb-0= @representative.name
+      - if @representative.title.present?
+        .text-muted= @representative.title.titleize
+      %h2.h5.mt-4 Bio
+      - if @representative.party.present?
+        %p.mb-1
+          %strong Party:
+          = @representative.party
+      - if @representative.title.present?
+        %p.mb-1
+          %strong Office:
+          = @representative.title.titleize
+  %hr.my-4
+  %h2.h5 Contact
+  - if @representative.office_address.present?
+    %p.mb-1
+      %strong Address:
+      = @representative.office_address
+  - if @representative.phone.present?
+    %p.mb-1
+      %strong Phone:
+      = @representative.phone
+  - if @representative.website.present?
+    %p.mb-1
+      %strong Website:
+      = link_to @representative.website, @representative.website, target: '_blank', rel: 'noopener'
+  - if @representative.contact_form.present?
+    %p.mb-1
+      %strong Contact form:
+      = link_to @representative.contact_form, @representative.contact_form, target: '_blank', rel: 'noopener'
+  %h2.h5.mt-4 Socials
+  - if @representative.twitter.present?
+    %p.mb-1
+      %strong Twitter:
+      = link_to @representative.twitter, twitter_url(@representative.twitter), target: '_blank', rel: 'noopener'
+  - if @representative.facebook.present?
+    %p.mb-1
+      %strong Facebook:
+      = link_to @representative.facebook, facebook_url(@representative.facebook), target: '_blank', rel: 'noopener'
+  - if @representative.youtube.present?
+    %p.mb-1
+      %strong YouTube:
+      = link_to @representative.youtube, youtube_url(@representative.youtube), target: '_blank', rel: 'noopener'
