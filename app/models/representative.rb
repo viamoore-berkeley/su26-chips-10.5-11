@@ -35,13 +35,7 @@ class Representative < ApplicationRecord
     response = rep_info['results'][0]['response']
     fields = response['results'][0]['fields']
     # checks if fields and cong_districts exist/filled
-    districts = if fields.present? && fields['congressional_districts'].present?
-                  # Assign cong dist in the search to districts
-                  fields['congressional_districts']
-                else
-                  # if no districts are found in search
-                  []
-                end
+    districts = Representative.find_matching_districts(fields)
 
     districts.each do |district|
       # checks if districts and curr legis exist/filled
@@ -63,6 +57,16 @@ class Representative < ApplicationRecord
     end
     # returns all reps with a uniq id so multiple represenetatives arent shown more than once on the list
     reps.uniq(&:id)
+  end
+
+  def self.find_matching_districts(fields)
+    if fields.present? && fields['congressional_districts'].present?
+      # Assign cong dist in the search to districts
+      fields['congressional_districts']
+    else
+      # if no districts are found in search
+      []
+    end
   end
 
   def self.find_rep(official, title: '', ocdid: '')
