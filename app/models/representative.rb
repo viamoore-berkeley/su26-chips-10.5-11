@@ -7,6 +7,8 @@
 #  id         :integer          not null, primary key
 #  name       :string
 #  ocdid      :string
+#  party      :string
+#  photo_url  :string
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
