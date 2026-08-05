@@ -9,7 +9,5 @@ class RepresentativesController < ApplicationController
     @representative = Representative.find_by(name: params[:name])
   end
 
-  def search
-  
-  end
+  def search; end
 end
