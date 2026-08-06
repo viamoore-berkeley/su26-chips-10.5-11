@@ -31,12 +31,12 @@ RSpec.describe County do
       long_max:     '-84.88908'
     }
     @sweet_home = described_class.create!(bama_attributes)
-    @Autauga = @sweet_home.counties.create!({ name:       'Autauga County',
+    @autauga = @sweet_home.counties.create!({ name:       'Autauga County',
                                    fips_code:  5,
                                    fips_class: 69 })
   end
 
   it 'fips_code properly left justifies' do
-    expect(@Autauga.std_fips_code).to eq '005'
+    expect(@autauga.std_fips_code).to eq '005'
   end
 end
