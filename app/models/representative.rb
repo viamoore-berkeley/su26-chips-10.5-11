@@ -36,26 +36,37 @@ class Representative < ApplicationRecord
     geocodio.geocode(query, ['cd'])
   end
 
-  # NOTE: This info only grabs data for the most likely represenative district
-  # given a search. It would be good to adapt this to show all possible
-  # matching representatives for a search / county.
+  # Builds/updates a Representative for every legislator across all matching
+  # districts, deduped so a member shared by multiple districts appears once.
   # See https://www.geocod.io/docs/#data-appends-fields
   def self.civic_api_to_representative_params(rep_info)
     response = rep_info['results'][0]['response']
     fields = response['results'][0]['fields']
-    legislators = fields['congressional_districts'][0]['current_legislators']
-    legislators.map { |official| find_rep(official) }
+    officials = find_matching_districts(fields).flat_map { |district| legislators_for(district) }
+    officials.map { |o| find_rep(o, title: o['type'], ocdid: o.dig('references', 'govtrack_id')) }.uniq(&:id)
   end
 
-  # Find an existing representative by bioguide_id (or build a new one), then
-  # populate it from the Geocodio payload. Re-searching a district updates the
-  # existing record instead of creating a duplicate. bioguide_id lives in the
-  # references block and is unique per member; fall back to a new record when it
-  # is missing so distinct officials never collapse onto one row.
-  def self.find_rep(official)
-    bioguide = official.dig('references', 'bioguide_id')
-    rep = bioguide.present? ? find_or_initialize_by(bioguide_id: bioguide) : new
-    rep.update_from_geocodio(official)
+  def self.find_matching_districts(fields)
+    return [] unless fields.present? && fields['congressional_districts'].present?
+
+    fields['congressional_districts']
+  end
+
+  def self.legislators_for(district)
+    return [] unless district.present? && district['current_legislators'].present?
+
+    district['current_legislators']
+  end
+
+  # Find an existing representative by ocdid (or build a new one) and populate it
+  # from the Geocodio payload, so re-searching updates in place instead of
+  # creating a duplicate.
+  def self.find_rep(official, title: '', ocdid: '')
+    rep = find_or_initialize_by(ocdid: ocdid)
+    attrs = geocodio_attributes(official)
+    attrs[:title] = title if title.present?
+    rep.update!(attrs)
+    rep
   end
 
   def self.photo_url_for(bioguide_id)

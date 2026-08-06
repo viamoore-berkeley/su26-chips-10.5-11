@@ -2,8 +2,6 @@
 
 class AddDetailsToRepresentatives < ActiveRecord::Migration[7.2]
   def change
-    add_column :representatives, :party, :string
-    add_column :representatives, :photo_url, :string
     add_column :representatives, :bioguide_id, :string
     add_column :representatives, :office_address, :string
     add_column :representatives, :phone, :string
