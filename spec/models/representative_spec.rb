@@ -102,4 +102,22 @@ RSpec.describe Representative do
       expect(rep).to have_attributes(title: 'senator', ocdid: '2', name: 'Jane Doe', party: 'Democrat')
     end
   end
+
+  describe 'geocodio_search (network stubbed)' do
+    let(:geocodio_body) { Rails.root.join('spec/fixtures/geocodio_response.json').read }
+
+    before do
+      stub_request(:post, /api\.geocod\.io/).to_return(
+        status: 200,
+        body: geocodio_body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    end
+
+    it 'fetches and parses representatives without hitting the network' do
+      data = described_class.geocodio_search('1234 Main St')
+      reps = described_class.civic_api_to_representative_params(data)
+      expect(reps.first).to have_attributes(name: 'Jane Doe', party: 'Democrat', phone: '202-555-0100')
+    end
+  end
 end
