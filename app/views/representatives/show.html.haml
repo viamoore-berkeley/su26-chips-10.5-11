@@ -2,7 +2,7 @@
   .row
     .col-12.col-md-3.text-center.mb-3.mb-md-0
       - if @representative.photo_url.present?
-        = image_tag @representative.photo_url, alt: @representative.name, class: 'img-fluid', onerror: 'this.hidden=true'
+        = image_tag @representative.photo_url, alt: @representative.name, class: 'img-fluid', onerror: 'this.remove()'
       - else
         %i.fas.fa-user.fa-6x.text-secondary
     .col-12.col-md-9
