@@ -30,7 +30,7 @@ RSpec.describe County do
       long_min:     '30.223334',
       long_max:     '-84.88908'
     }
-    @sweet_home = described_class.create!(bama_attributes)
+    @sweet_home = State.create!(bama_attributes)
     @autauga = @sweet_home.counties.create!({ name:       'Autauga County',
                                    fips_code:  5,
                                    fips_class: 69 })
