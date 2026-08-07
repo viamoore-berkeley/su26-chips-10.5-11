@@ -27,6 +27,11 @@ module NavigationHelpers
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
 
+    when /^the search page for "(.*)"$/
+      x = $1
+      x = x.sub(/\s/, "\%20")
+      "/search/#{x}"
+
     else
       begin
         page_name =~ /^the (.*) page$/
