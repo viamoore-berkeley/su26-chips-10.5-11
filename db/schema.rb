@@ -50,6 +50,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_05_062625) do
     t.string "title"
     t.string "party"
     t.string "photo_url"
+    t.string "bioguide_id"
+    t.string "office_address"
+    t.string "phone"
+    t.string "website"
+    t.string "contact_form"
+    t.string "twitter"
+    t.string "facebook"
+    t.string "youtube"
   end
 
   create_table "states", force: :cascade do |t|
