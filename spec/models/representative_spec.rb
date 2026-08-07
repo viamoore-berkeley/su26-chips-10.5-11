@@ -58,6 +58,15 @@ RSpec.describe Representative do
     }
   end
 
+  let(:official) do
+    {
+      'type' => 'senator',
+      'bio' => { 'first_name' => 'Jane', 'last_name' => 'Doe', 'party' => 'Democrat' },
+      'contact' => { 'phone' => '202-555-0100' },
+      'references' => { 'govtrack_id' => '2', 'bioguide_id' => 'D000197' }
+    }
+  end
+
   describe 'civic_api' do
     it 'searches for the correct representative' do
       rep = described_class.civic_api_to_representative_params(jane_doe_json)
@@ -80,21 +89,35 @@ RSpec.describe Representative do
     end
 
     it 'updates an existing representative' do
-      rep = described_class.create!(ocdid: '1', title: 'old title')
-      official = { 'name' => 'Jane Doe', 'party' => 'party+', 'photo_url' => 'photo+.jpg' }
-      described_class.find_rep(official, title: 'title+', ocdid: 1)
-      rep.reload
-      expect(rep).to have_attributes(title: 'title+', name: 'Jane Doe', party: 'party+', photo_url: 'photo+.jpg')
+      described_class.create!(ocdid: '2', title: 'old title')
+      rep = described_class.find_rep(official, title: 'senator', ocdid: '2')
+      expect(rep).to have_attributes(title: 'senator', name: 'Jane Doe', party: 'Democrat', phone: '202-555-0100')
     end
   end
 
   describe 'update_from_geocodio' do
-    it 'updates represenative fields from geocodio correctly' do
-      rep = described_class.create!(name: 'Jane Doe', ocdid: '1', title: 'old title', party: 'old party',
-                                    photo_url: 'old photo')
-      official = { 'type' => 'new title', 'govtrack_id' => '2', 'party' => 'new party', 'photo_url' => 'new.jpg' }
+    it 'updates representative fields from geocodio correctly' do
+      rep = described_class.create!(name: 'Old Name', ocdid: '1', title: 'old title')
       rep.update_from_geocodio(official)
-      expect(rep).to have_attributes(title: 'new title', ocdid: '2', party: 'new party', photo_url: 'new.jpg')
+      expect(rep).to have_attributes(title: 'senator', ocdid: '2', name: 'Jane Doe', party: 'Democrat')
+    end
+  end
+
+  describe 'geocodio_search (network stubbed)' do
+    let(:geocodio_body) { Rails.root.join('spec/fixtures/geocodio_response.json').read }
+
+    before do
+      stub_request(:post, /api\.geocod\.io/).to_return(
+        status: 200,
+        body: geocodio_body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    end
+
+    it 'fetches and parses representatives without hitting the network' do
+      data = described_class.geocodio_search('1234 Main St')
+      reps = described_class.civic_api_to_representative_params(data)
+      expect(reps.first).to have_attributes(name: 'Jane Doe', party: 'Democrat', phone: '202-555-0100')
     end
   end
 end

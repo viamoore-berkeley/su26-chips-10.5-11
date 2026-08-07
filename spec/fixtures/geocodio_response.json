@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "response": {
+        "results": [
+          {
+            "fields": {
+              "congressional_districts": [
+                {
+                  "name": "Congressional District 12",
+                  "current_legislators": [
+                    {
+                      "type": "representative",
+                      "bio": {
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "party": "Democrat"
+                      },
+                      "contact": {
+                        "address": "1234 Longworth House Office Building, Washington DC 20515",
+                        "phone": "202-555-0100",
+                        "contact_form": "https://jane.house.gov/contact",
+                        "url": "https://jane.house.gov"
+                      },
+                      "social": {
+                        "twitter": "RepJaneDoe",
+                        "facebook": "RepJaneDoe",
+                        "youtube": "RepJaneDoe"
+                      },
+                      "references": {
+                        "bioguide_id": "D000197",
+                        "govtrack_id": "412345"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
