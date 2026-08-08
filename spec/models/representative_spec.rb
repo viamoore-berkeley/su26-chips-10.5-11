@@ -107,6 +107,7 @@ RSpec.describe Representative do
     let(:geocodio_body) { Rails.root.join('spec/fixtures/geocodio_response.json').read }
 
     before do
+      ENV['GEOCODIO_API_KEY'] = 'fake-key'
       stub_request(:post, /api\.geocod\.io/).to_return(
         status: 200,
         body: geocodio_body,
