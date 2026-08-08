@@ -29,14 +29,15 @@ Scenario: The Representatives Page
 ## CHIPS 10.5 -- add iteration 1/2 additional pages here.
 ## You may want to set up conditions like searching for data, etc.
 
-## CS169: Add the first page here.
-# Be sure to tag the Scenario with @a11y
-# @a11y
-# Scenario: ...
+@a11y
+Scenario: County Representative Search Page
+    Given I am on the search page for "Alameda County"
+    Then the page should be axe clean
 
-## CS169: Add the second page here.
-# @a11y
-# Scenario: ...
+@a11y
+Scenario: Events Page
+    Given I am on the events page
+    Then the page should be axe clean
 
 ## CS169: Add the third page here.
 # @a11y
@@ -45,3 +46,14 @@ Scenario: The Representatives Page
 ## CS169: Add the fourth page here.
 # @a11y
 # Scenario: ...
+
+
+#@a11y
+#Scenario: Representative View
+#    Given I am on the page for representative 86
+#    Then the page should be axe clean
+
+#@a11y
+#Scenario: State View
+#    Given I am on the state page for "CA"
+#    Then the page should be axe clean
