@@ -22,14 +22,12 @@ RSpec.describe NewsItem do
   before do
     news_attributes = {
       id:               7,
-      link:             "https://xkcd.com/",
-      title:            "Trick Play"
+      link:             'https://xkcd.com/',
+      title:            'Trick Play'
     }
     rep = Representative.create(id: 10)
     @test_news_item = rep.news_items.create!(news_attributes)
   end
-
-# self.find_for(representative_id)
 
   it 'can find news item' do
     expect(described_class.find_for(10)).to eq @test_news_item
