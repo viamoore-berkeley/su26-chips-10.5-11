@@ -32,6 +32,12 @@ module NavigationHelpers
       x = x.sub(/\s/, "\%20")
       "/search/#{x}"
 
+    when /^the page for representative (.*)$/
+      "/representatives/#{$1}"
+
+    when /^the events page/
+      "/events"
+
     else
       begin
         page_name =~ /^the (.*) page$/
