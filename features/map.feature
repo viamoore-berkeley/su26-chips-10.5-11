@@ -13,3 +13,9 @@ Scenario: Selecting a county
   Then I should see 58 counties
   When I click the county "Alameda County"
   Then I should be on the search page for "Alameda County"
+
+Scenario: Viewing the representative for a county
+  Given I am on the search page for "Alameda County"
+  Then I should see representative "Jane Doe"
+  When I click representative "Jane Doe"
+  Then I should be on the representative page for "Jane Doe"

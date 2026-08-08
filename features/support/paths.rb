@@ -32,9 +32,11 @@ module NavigationHelpers
       x = x.sub(/\s/, "\%20")
       "/search/#{x}"
 
-    when /^the page for representative (.*)$/
-      "/representatives/#{$1}"
-
+    when /^the representative page for "(.*)"$/
+      rep_name = $1
+      rep = Representative.find_by(name: rep_name)
+      representative_path(rep)
+      
     when /^the events page/
       "/events"
 
