@@ -4,11 +4,16 @@ require 'rails_helper'
 
 describe MapController do
   before do
-    @california = create(:state)
-    @washington = create(:washington)
+    # TODO: It would be good to move these to factories.
+    @california = State.create({ name: 'California', symbol: 'CA', fips_code: 6,
+                            is_territory: 0, lat_min: 32.30, lat_max: 40.00,
+                            long_min: 114.8, long_max: 124.24 })
+    @washington = State.create({ name: 'Washington', symbol: 'WA', fips_code: 53,
+                            is_territory: 0, lat_min: 32.30, lat_max: 40.00,
+                            long_min: 114.8, long_max: 124.24 })
 
-    @alameda = create(:county, state: @california)
-    @alpine  = create(:alpine_county, state: @california)
+    @alameda = @california.counties.create({ name: 'Alameda', fips_code: 1, fips_class: 'CA' })
+    @alpine = @california.counties.create({ name: 'Alpine', fips_code: 3, fips_class: 'CA' })
   end
 
   describe 'GET index' do

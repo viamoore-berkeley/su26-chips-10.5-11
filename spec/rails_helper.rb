@@ -13,7 +13,6 @@ SimpleCov::Formatter::LcovFormatter.config do |c|
 end
 
 SimpleCov.start 'rails' do
-  add_filter 'lib'
   command_name 'rspec'
 
   ## CS169: You may want to modify some of the testing configuration.
