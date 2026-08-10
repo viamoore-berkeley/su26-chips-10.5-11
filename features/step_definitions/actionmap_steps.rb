@@ -45,3 +45,13 @@ Then /I should see (\d+) (?:states|counties)/i do |count|
   # You might use this as a check that the right number of elements are rendered.
   expect(page).to have_css('.actionmap-view-region', count: count)
 end
+
+Then /I should see representative "(.*)"/ do |name|
+  expect(page).to have_css('table#events a', text: name)
+end
+
+When /I click representative "(.*)"/ do |name|
+  expect(page).to have_css('table#events a', text: name)
+  rep = Representative.find_by(name: name)
+  visit representative_path(rep)
+end
