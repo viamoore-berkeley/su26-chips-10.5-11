@@ -17,6 +17,12 @@ class MyNewsItemsController < ApplicationController
   def new_search
     @representatives_list = Representative.all
     @issues = NewsItem.issues
+
+    return unless params[:issue].present? && params[:representative_id].present?
+
+    @representative = Representative.find(params[:representative_id])
+
+    @search_issue = params[:issue]
   end
 
   def edit; end
