@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe MyNewsItemsController do
+  render_views
+
   before do
     @user = create(:user)
     @rep = create(:representative)
@@ -12,9 +14,24 @@ describe MyNewsItemsController do
   end
 
   describe 'GET new' do
-    it 'returns success' do
+    it 'renders the form fields' do
       get :new, params: { representative_id: @rep.id }
+
       expect(response).to be_successful
+      expect(response.body).to include('Title')
+      expect(response.body).to include('Description')
+      expect(response.body).to include('Link')
+    end
+  end
+
+  describe 'GET new_search' do
+    it 'renders to search form fields' do
+      get :new_search
+
+      expect(response).to be_successful
+      expect(response.body).to include('Representative')
+      expect(response.body).to include('Issue')
+      expect(response.body).to include('Search')
     end
   end
 

@@ -5,16 +5,13 @@
 # Table name: news_items
 #
 #  id                :integer          not null, primary key
-#  description       :text
-#  link              :string           not null
 #  title             :string           not null
+#  link              :string           not null
+#  description       :text
+#  representative_id :integer          not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  representative_id :integer          not null
-#
-# Indexes
-#
-#  index_news_items_on_representative_id  (representative_id)
+#  issue             :string
 #
 require 'rails_helper'
 

@@ -3,12 +3,20 @@
 class MyNewsItemsController < ApplicationController
   before_action :require_login!
 
-  before_action :set_representative
+  before_action :set_representative, except: :new_search
   before_action :set_representatives_list
   before_action :set_news_item, only: %i[edit update destroy]
 
   def new
-    @news_item = NewsItem.new
+    @news_item = NewsItem.new(
+      representative_id: params[:representative_id],
+      issue: params[:issue]
+    )
+  end
+
+  def new_search
+    @representatives_list = Representative.all
+    @issues = NewsItem.issues
   end
 
   def edit; end

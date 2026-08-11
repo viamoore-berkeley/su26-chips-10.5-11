@@ -41,7 +41,10 @@ Scenario: Events Page
 
 ## CS169: Add the third page here.
 # @a11y
-# Scenario: ...
+Scenario: News Page
+    Given a representative exists with name "Jane Doe"
+    Given I am on the news items page for "Jane Doe"
+    Then the page should be axe clean
 
 ## CS169: Add the fourth page here.
 # @a11y

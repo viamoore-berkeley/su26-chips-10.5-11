@@ -40,6 +40,11 @@ module NavigationHelpers
     when /^the events page/
       "/events"
 
+    when /^the news items page for "(.*)"/
+      rep_name = $1
+      rep = Representative.find_by(name: rep_name)
+      representative_news_items_path(rep)
+
     else
       begin
         page_name =~ /^the (.*) page$/

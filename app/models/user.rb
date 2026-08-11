@@ -5,17 +5,13 @@
 # Table name: users
 #
 #  id         :integer          not null, primary key
+#  provider   :integer          not null
+#  uid        :string           not null
 #  email      :string
 #  first_name :string
 #  last_name  :string
-#  provider   :integer          not null
-#  uid        :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#
-# Indexes
-#
-#  index_users_on_uid_provider  (uid,provider) UNIQUE
 #
 class User < ApplicationRecord
   # Add more Authentication Providers here.
