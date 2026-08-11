@@ -37,17 +37,17 @@ class MyNewsItemsController < ApplicationController
     redirect_to representative_news_items_path(@representative),
                 notice: 'News was successfully destroyed.'
   end
-  #Searches for the top 5
+
+  # Searches for the top 5
   def search
     @issue = params[:issue]
     if NewsItem.issues.include?(@issue)
-      @top_five = NULL #needs to pull top five off of the NewsAPI and create the find_top_five
-      render:search_results
+      @top_five = NULL # needs to pull top five off of the NewsAPI and create the find_top_five
+      render :search_results
     else
-      render:search
+      render :search
     end
-  end 
-
+  end
 
   private
 
