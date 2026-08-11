@@ -24,6 +24,7 @@ class NewsItem < ApplicationRecord
   def self.issues
     ["Free Speech", "Immigration", "Terrorism", "Social Security and Medicare", "Abortion", "Student Loans", "Gun Control", "Unemployment", "Climate Change", "Homelessness", "Racism", "Tax Reform", "Net Neutrality", "Religious Freedom", "Border Security", "Minimum Wage", "Equal Pay"]
   end
+# fixing git`
 validate def val_issue
   if issue.blank?
     return
