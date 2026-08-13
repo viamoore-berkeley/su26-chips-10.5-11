@@ -36,7 +36,16 @@ RSpec.describe NewsItem do
 
     before do
       ENV['CURRENTS_API_KEY'] = 'fake-key'
-      stub_request(:get, 'https://api.currentsapi.services/v1/search?apiKey=fake-key&keywords=Immigration').to_return(
+      stub_request(:get, 'https://api.currentsapi.services/v1/search').with(
+        query: {
+          keywords: 'Immigration',
+          language: 'en',
+          page_size: '5'
+        },
+        headers: {
+          'Authorization' => 'Bearer fake-key'
+        }
+      ).to_return(
         status: 200,
         body: currents_body,
         headers: { 'Content-Type' => 'application/json' }
