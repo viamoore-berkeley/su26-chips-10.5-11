@@ -45,9 +45,17 @@ class NewsItem < ApplicationRecord
     currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
     raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
 
-    url = "https://api.currentsapi.services/v1/search?apiKey=#{currents_api_key}&keywords=#{CGI.escape(query)}"
-
-    response = Faraday.get(url)
+    response = Faraday.get(
+      'https://api.currentsapi.services/v1/search',
+      {
+        keywords: query,
+        language: 'en',
+        page_size: 5
+      },
+      {
+        'Authorization' => "Bearer #{currents_api_key}"
+      }
+    )
     JSON.parse(response.body)
   end
 end
