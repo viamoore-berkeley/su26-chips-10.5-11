@@ -6,8 +6,6 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
 #  ocdid          :string
 #  title          :string
 #  party          :string
@@ -20,6 +18,8 @@
 #  twitter        :string
 #  facebook       :string
 #  youtube        :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 require 'rails_helper'
 

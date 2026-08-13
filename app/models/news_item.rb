@@ -12,7 +12,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  representative_id :integer          not null
-#  user_id           :integer          not null
+#  user_id           :integer
 #
 # Indexes
 #
@@ -32,6 +32,13 @@ class NewsItem < ApplicationRecord
      'Abortion', 'Student Loans', 'Gun Control', 'Unemployment',
      'Climate Change', 'Homelessness', 'Racism', 'Tax Reform', 'Net Neutrality',
      'Religious Freedom', 'Border Security', 'Minimum Wage', 'Equal Pay']
+  end
+  validate def val_issue
+    return if issue.blank?
+
+    return if NewsItem.issues.include(issue)
+
+    errors.add(:issue, 'Not a valid Issue!')
   end
 
   def self.find_for(representative_id)

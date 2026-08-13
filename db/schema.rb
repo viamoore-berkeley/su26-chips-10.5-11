@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_12_221504) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "issue"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.index ["representative_id"], name: "index_news_items_on_representative_id"
     t.index ["user_id"], name: "index_news_items_on_user_id"
   end
