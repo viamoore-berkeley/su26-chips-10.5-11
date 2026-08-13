@@ -8,7 +8,7 @@ describe MyNewsItemsController do
   before do
     @user = create(:user)
     @rep = create(:representative)
-    @news_item = create(:news_item, representative: @rep)
+    @news_item = create(:news_item, representative: @rep, user: @user)
 
     session[:user_id] = @user.id
   end

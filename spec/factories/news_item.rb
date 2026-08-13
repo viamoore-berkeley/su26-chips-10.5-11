@@ -18,5 +18,6 @@ FactoryBot.define do
     link { 'xkcd.com' }
     title { 'Test News Story' }
     representative_id { 987_654 }
+    user_id { '0' }
   end
 end

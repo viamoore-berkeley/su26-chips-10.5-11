@@ -5,16 +5,26 @@
 # Table name: news_items
 #
 #  id                :integer          not null, primary key
-#  title             :string           not null
-#  link              :string           not null
 #  description       :text
-#  representative_id :integer          not null
+#  issue             :string
+#  link              :string           not null
+#  title             :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  issue             :string
+#  representative_id :integer          not null
+#  user_id           :integer          not null
+#
+# Indexes
+#
+#  index_news_items_on_representative_id  (representative_id)
+#  index_news_items_on_user_id            (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
 #
 class NewsItem < ApplicationRecord
-  # TODO: this belongs to a user (creator_id)
+  belongs_to :user
   belongs_to :representative
 
   def self.issues
@@ -26,7 +36,18 @@ class NewsItem < ApplicationRecord
 
   def self.find_for(representative_id)
     NewsItem.find_by(
-      representative_id: representative_id
+      representative_id: representative_id,
+      user_id: user_id
     )
+  end
+
+  def self.currents_search(query)
+    currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
+    raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
+
+    url = "https://api.currentsapi.services/v1/search?apiKey=#{currents_api_key}&keywords=#{CGI.escape(query)}"
+
+    response = Faraday.get(url)
+    JSON.parse(response.body)
   end
 end

@@ -29,6 +29,9 @@ class MyNewsItemsController < ApplicationController
 
   def create
     @news_item = NewsItem.new(news_item_params)
+    @news_item.representative_id = @representative.id
+    @news_item.user_id = current_user&.id
+
     if @news_item.save
       redirect_to representative_news_item_path(@representative, @news_item),
                   notice: 'News item was successfully created.'

@@ -5,13 +5,17 @@
 # Table name: events
 #
 #  id          :integer          not null, primary key
-#  name        :string           not null
 #  description :text
-#  county_id   :integer          not null
-#  start_time  :datetime
 #  end_time    :datetime
+#  name        :string           not null
+#  start_time  :datetime
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  county_id   :integer          not null
+#
+# Indexes
+#
+#  index_events_on_county_id  (county_id)
 #
 class Event < ApplicationRecord
   belongs_to :county
