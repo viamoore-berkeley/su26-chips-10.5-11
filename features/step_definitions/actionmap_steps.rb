@@ -5,9 +5,28 @@
 # These steps here are scaffolds, which might be useful.
 
 Given /^I am logged in via (github|google|developer) as (".*")/i do |provider, _data|
+  OmniAuth.config.mock_auth[provider.downcase.to_sym] = OmniAuth::AuthHash.new({
+                                                                                 provider: provider.downcase,
+    uid: '12345',
+    info: {
+      email: 'janedoe@example.com',
+      first_name: 'Jane',
+      last_name: 'Doe'
+    }
+                                                                               })
+
+  visit login_path
+  provider = provider.downcase
+
+  button_text = {
+    'github' => 'GitHub Login',
+    'google' => 'Google Login',
+    'developer' => 'Developer Login'
+  }[provider]
+
   # This is just a start. You may want to setup Omniauth differently.
   # Look up Omniauth.test_mode
-  page.find_link(text: "#{provider.capitalize} Login")
+  click_button(button_text)
 end
 
 # Suggest Steps that Interact with the Map.
@@ -54,4 +73,8 @@ When /I click representative "(.*)"/ do |name|
   expect(page).to have_css('table#events a', text: name)
   rep = Representative.find_by(name: name)
   visit representative_path(rep)
+end
+
+Given /a representative exists with name "(.*)"/ do |name|
+  @representative = Representative.create!(name: name, bioguide_id: '12345')
 end

@@ -3,18 +3,35 @@
 class MyNewsItemsController < ApplicationController
   before_action :require_login!
 
-  before_action :set_representative
+  before_action :set_representative, except: :new_search
   before_action :set_representatives_list
   before_action :set_news_item, only: %i[edit update destroy]
 
   def new
-    @news_item = NewsItem.new
+    @news_item = NewsItem.new(
+      representative_id: params[:representative_id],
+      issue: params[:issue]
+    )
+  end
+
+  def new_search
+    @representatives_list = Representative.all
+    @issues = NewsItem.issues
+
+    return unless params[:issue].present? && params[:representative_id].present?
+
+    @representative = Representative.find(params[:representative_id])
+
+    @search_issue = params[:issue]
   end
 
   def edit; end
 
   def create
     @news_item = NewsItem.new(news_item_params)
+    @news_item.representative_id = @representative.id
+    @news_item.user_id = current_user&.id
+
     if @news_item.save
       redirect_to representative_news_item_path(@representative, @news_item),
                   notice: 'News item was successfully created.'
@@ -51,7 +68,7 @@ class MyNewsItemsController < ApplicationController
 
   # Save an article chosen from the search results as a news item.
   def save
-    @news_item = NewsItem.create_from_article(@representative, article_params)
+    @news_item = NewsItem.create_from_article(@representative, current_user, article_params)
     if @news_item.persisted?
       redirect_to representative_news_item_path(@representative, @news_item),
                   notice: 'Article saved.'

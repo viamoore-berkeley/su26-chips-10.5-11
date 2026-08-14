@@ -12,23 +12,28 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  representative_id :integer          not null
+#  user_id           :integer
 #
 # Indexes
 #
 #  index_news_items_on_representative_id  (representative_id)
+#  index_news_items_on_user_id            (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
 #
 class NewsItem < ApplicationRecord
-  # TODO: this belongs to a user (creator_id)
+  belongs_to :user
   belongs_to :representative
   has_many :ratings, dependent: :destroy
 
-  # Lists of issues
   def self.issues
-    ['Free Speech', 'Immigration', 'Terrorism', 'Social Security and Medicare', 'Abortion', 'Student Loans',
-     'Gun Control', 'Unemployment', 'Climate Change', 'Homelessness', 'Racism', 'Tax Reform', 'Net Neutrality',
+    ['Free Speech', 'Immigration', 'Terrorism', 'Social Security and Medicare',
+     'Abortion', 'Student Loans', 'Gun Control', 'Unemployment',
+     'Climate Change', 'Homelessness', 'Racism', 'Tax Reform', 'Net Neutrality',
      'Religious Freedom', 'Border Security', 'Minimum Wage', 'Equal Pay']
   end
-  # fixing git`
   validate def val_issue
     return if issue.blank?
 
@@ -39,18 +44,38 @@ class NewsItem < ApplicationRecord
 
   def self.find_for(representative_id)
     NewsItem.find_by(
-      representative_id: representative_id
+      representative_id: representative_id,
+      user_id: user_id
     )
   end
 
   # Save an article chosen from a news search as a news item for the given
-  # representative, deduped by link so the same article isn't saved twice.
-  def self.create_from_article(representative, article)
+  # representative + user, deduped by link so the same article isn't saved twice.
+  def self.create_from_article(representative, user, article)
     representative.news_items.find_or_create_by(link: article[:link]) do |item|
+      item.user = user
       item.title = article[:title]
       item.description = article[:description]
       item.issue = article[:issue]
     end
+  end
+
+  def self.currents_search(query)
+    currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
+    raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
+
+    response = Faraday.get(
+      'https://api.currentsapi.services/v1/search',
+      {
+        keywords: query,
+        language: 'en',
+        page_size: 5
+      },
+      {
+        'Authorization' => "Bearer #{currents_api_key}"
+      }
+    )
+    JSON.parse(response.body)
   end
 
   def average_rating

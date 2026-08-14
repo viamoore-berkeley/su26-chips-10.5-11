@@ -25,9 +25,9 @@
 require 'rails_helper'
 
 RSpec.describe Rating do
-  let(:representative) { create(:representative) }
-  let(:news_item) { create(:news_item, representative: representative) }
   let(:user) { create(:user) }
+  let(:representative) { create(:representative) }
+  let(:news_item) { create(:news_item, representative: representative, user: user) }
 
   it 'is valid with a value between 1 and 5' do
     expect(described_class.new(user: user, news_item: news_item, value: 3)).to be_valid

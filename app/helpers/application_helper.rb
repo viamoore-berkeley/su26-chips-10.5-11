@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def login_enabled?(provider)
-    return true if Rails.env.development?
+    return true if Rails.env.local?
 
     client_id = "#{provider.upcase}_CLIENT_ID"
     secret = "#{provider.upcase}_CLIENT_SECRET"

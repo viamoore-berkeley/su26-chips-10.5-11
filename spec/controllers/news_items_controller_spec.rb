@@ -5,10 +5,11 @@ require 'rails_helper'
 describe NewsItemsController do
   before do
     @rep = create(:representative)
-    @news = create(:news_item, representative: @rep)
+    @user = create(:user)
+    @news = create(:news_item, representative: @rep, user: @user)
     @params = {
       representative_id: @rep.id,
-        id: @news.id
+      id: @news.id
     }
   end
 

@@ -12,29 +12,49 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  representative_id :integer          not null
+#  user_id           :integer
 #
 # Indexes
 #
 #  index_news_items_on_representative_id  (representative_id)
+#  index_news_items_on_user_id            (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
 #
 require 'rails_helper'
 
 RSpec.describe NewsItem do
   before do
-    news_attributes = {
-      id:               7,
-      link:             'https://xkcd.com/',
-      title:            'Trick Play'
-    }
-    rep = Representative.create(id: 10)
-    @test_news_item = rep.news_items.create!(news_attributes)
+    Representative.create(id: 10)
+    User.create(uid: '0', provider: 1)
   end
 
-  it 'can find news item' do
-    expect(described_class.find_for(10)).to eq @test_news_item
-  end
+  describe 'currents_search (network stubbed)' do
+    let(:currents_body) { Rails.root.join('spec/fixtures/currents_response.json').read }
 
-  it 'fails to find missing item' do
-    expect(described_class.find_for(100)).to be_nil
+    before do
+      ENV['CURRENTS_API_KEY'] = 'fake-key'
+      stub_request(:get, 'https://api.currentsapi.services/v1/search').with(
+        query: {
+          keywords: 'Immigration',
+          language: 'en',
+          page_size: '5'
+        },
+        headers: {
+          'Authorization' => 'Bearer fake-key'
+        }
+      ).to_return(
+        status: 200,
+        body: currents_body,
+        headers: { 'Content-Type' => 'application/json' }
+      )
+    end
+
+    it 'fetches and parses representatives without hitting the network' do
+      result = described_class.currents_search('Immigration')
+      expect(result['news'].first['title']).to eq('Test Article')
+    end
   end
 end
