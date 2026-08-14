@@ -58,12 +58,11 @@ class MyNewsItemsController < ApplicationController
   # Searches for the top 5
   def search
     @issue = params[:issue]
-    if NewsItem.issues.include?(@issue)
-      @top_five = NULL # needs to pull top five off of the NewsAPI and create the find_top_five
-      render :search_results
-    else
-      render :search
-    end
+    @representative = Representative.find(params[:representative_id])
+    search_for = "#{@representative.name} #{@issue}"
+    ans = NewsItem.currents_search(search_for)
+    @articles = ans['news'] || []
+    redirect_to representative_news_items_path(@representative)
   end
 
   # Save an article chosen from the search results as a news item.
