@@ -62,7 +62,7 @@ class MyNewsItemsController < ApplicationController
     search_for = "#{@representative.name} #{@issue}"
     ans = NewsItem.currents_search(search_for)
     @articles = ans['news'] || []
-    redirect_to representative_news_items_path(@representative)
+    render :search
   end
 
   # Save an article chosen from the search results as a news item.
