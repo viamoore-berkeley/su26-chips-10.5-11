@@ -1,0 +1,15 @@
+{
+  "news": [
+      {
+        "id": "f8f18e4b-c66e-47ca-9f7d-54f03e431a77",
+        "title": "Test Article",
+        "description": "The company announced a new multi-year expansion plan...",
+        "url": "https://example.com/business/chipmaker-expands",
+        "author": "Editorial Desk",
+        "image": "https://example.com/images/chipmaker.jpg",
+        "language": "en",
+        "category": ["science_technology", "economy_business_finance"],
+        "published": "2026-03-24 11:10:00 +0000"
+      }
+    ]
+}

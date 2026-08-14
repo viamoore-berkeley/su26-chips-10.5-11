@@ -45,7 +45,6 @@ Scenario: New NewsItem Page
     Given I am on a new news item page
     Then the page should be axe clean
 
-
 @a11y
 Scenario: Edit NewsItem Page
     Given I am on a page to edit a news item

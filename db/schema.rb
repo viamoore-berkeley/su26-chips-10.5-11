@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_11_042626) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_12_221504) do
   create_table "counties", force: :cascade do |t|
     t.string "name", null: false
     t.integer "state_id", null: false
@@ -40,7 +40,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_11_042626) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "issue"
+    t.integer "user_id"
     t.index ["representative_id"], name: "index_news_items_on_representative_id"
+    t.index ["user_id"], name: "index_news_items_on_user_id"
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -96,6 +98,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_11_042626) do
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
   end
 
+  add_foreign_key "news_items", "users"
   add_foreign_key "ratings", "news_items"
   add_foreign_key "ratings", "users"
 end

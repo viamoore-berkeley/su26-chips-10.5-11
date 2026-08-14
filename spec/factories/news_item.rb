@@ -18,6 +18,7 @@ FactoryBot.define do
     link { 'news.com/this-is-a-test' }
     title { 'Test News Story' }
     representative_id { 987_654 }
+    user_id { '0' }
   end
 
   factory :news_item_with_rep, class: 'NewsItem' do
@@ -25,5 +26,6 @@ FactoryBot.define do
     link { 'news.com/this-is-a-test' }
     title { 'Test News Story' }
     representative
+    user
   end
 end

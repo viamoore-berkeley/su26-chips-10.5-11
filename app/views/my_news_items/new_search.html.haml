@@ -1,0 +1,16 @@
+.row
+  .col-12.col-md-6.offset-md-3.col-xl-4.offset-xl-4
+    %h1.text-center Search for News Articles
+
+  .col-12.col-md-6.offset-md-3.col-xl-4.offset-xl-4
+    = form_with url: new_search_my_news_item_path, method: :get do |f|
+      .form-group
+        = f.label :representative_id, 'Representative'
+        = f.collection_select :representative_id, @representatives_list, :id, :name, prompt: 'Select Representative'
+
+      .form-group
+        = f.label :issue, 'Issue'
+        = f.select :issue, @issues, prompt: 'Select Issue'
+
+      .mt-3
+        = f.submit 'Search', class: 'btn btn-primary btn-block'

@@ -35,6 +35,15 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :my_news_items do
+    collection do
+      get :new_search
+    end
+  end
+
+  get '/my_news_items/new_search' => 'my_news_items#new_search',
+    :as => :new_search_my_news_item
+
   get '/representatives/:representative_id/my_news_item/new' => 'my_news_items#new',
       :as                                                     => :representative_new_my_news_item
   post '/representatives/:representative_id/my_news_item/new', to: 'my_news_items#create'
