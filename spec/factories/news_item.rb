@@ -20,10 +20,10 @@ FactoryBot.define do
     representative_id { 987_654 }
   end
 
-  factory :news_item_with_rep, class: NewsItem do
+  factory :news_item_with_rep, class: 'NewsItem' do
     id { 10 }
     link { 'news.com/this-is-a-test' }
     title { 'Test News Story' }
-    association :representative
+    representative
   end
 end
