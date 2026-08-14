@@ -21,6 +21,8 @@ class User < ApplicationRecord
   # Add more Authentication Providers here.
   enum :provider, { google_oauth2: 1, github: 2, developer: 3 }, prefix: :provider
 
+  has_many :ratings, dependent: :destroy
+
   # Each (uid, provider) pair should be unique.
   validates :uid, uniqueness: { scope: :provider }
 
