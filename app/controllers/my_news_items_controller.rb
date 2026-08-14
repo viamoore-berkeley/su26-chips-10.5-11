@@ -59,8 +59,10 @@ class MyNewsItemsController < ApplicationController
   # Searches for the top 5
   def search
     @issue = params[:issue]
-    api = NewsApiService.get_articles(@representative.name, @issue)
-    @articles = api.first(5)
+    @representative = Representative.find(params[:representative_id])
+    search_for = "#{@representative.name} #{@issue}"
+    ans = NewsItem.top_five(search_for)
+    @articles = ans['news'] || []
     render :search
   end
 
