@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     case params[:provider]
     when 'developer'
-      render :unproccessible_entity and return unless Rails.env.development?
+      head :unprocessable_entity and return unless Rails.env.development?
 
       create_session(:create_developer_user)
     when 'github'
