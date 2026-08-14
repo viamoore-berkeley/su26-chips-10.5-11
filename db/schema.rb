@@ -62,8 +62,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_12_221504) do
     t.datetime "updated_at", null: false
     t.string "ocdid"
     t.string "title"
-    t.string "party"
-    t.string "photo_url"
     t.string "bioguide_id"
     t.string "office_address"
     t.string "phone"
@@ -72,6 +70,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_12_221504) do
     t.string "twitter"
     t.string "facebook"
     t.string "youtube"
+    t.string "party"
+    t.string "photo_url"
   end
 
   create_table "states", force: :cascade do |t|
