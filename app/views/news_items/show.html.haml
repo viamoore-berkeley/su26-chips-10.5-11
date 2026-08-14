@@ -25,6 +25,21 @@
           %dt.col-sm-3.text-md-right Last Updated:
           %dt.col-sm-9
             %time.timeago{ datetime: @news_item.updated_at.iso8601 }
+        %dl.row
+          %dt.col-sm-3.text-md-right Average rating:
+          %dd.col-sm-9
+            - if @news_item.average_rating
+              = @news_item.average_rating
+              out of 5 from
+              = pluralize(@news_item.ratings.count, 'rating')
+            - else
+              No ratings yet
+        - if current_user
+          - current_rating = @news_item.ratings.find_by(user_id: current_user.id)&.value
+          = form_with url: rate_representative_news_item_path(@representative, @news_item), method: :post do |form|
+            = form.label :value, 'Rate this article:', class: 'form-label'
+            = form.select :value, (1..5).to_a, { selected: current_rating }, class: 'form-select w-auto'
+            = form.submit 'Save rating', class: 'btn btn-primary mt-2'
   .col-12.col-md-6.offset-md-3.col-xl-4.offset-xl-4
     .clearfix
       .float-right

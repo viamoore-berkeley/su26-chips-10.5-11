@@ -36,6 +36,14 @@ module NavigationHelpers
       rep_name = $1
       rep = Representative.find_by(name: rep_name)
       representative_path(rep)
+
+    when /^a new news item page$/
+      rep = create(:representative)
+      "/representatives/#{rep.id}/my_news_item/new"
+
+    when /^a page to edit a news item$/
+      news_item = create(:news_item_with_rep)
+      "/representatives/#{news_item.representative_id}/my_news_item/#{news_item.id}"
       
     when /^the events page/
       "/events"

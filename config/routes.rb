@@ -28,9 +28,9 @@ Rails.application.routes.draw do
   # Routes for Representatives
   resources :representatives, only: [:index]
   resources :representatives do
-    resources :news_items, only: %i[index show create] do
-      collection do
-        get :search
+    resources :news_items, only: %i[index show] do
+      member do
+        post :rate
       end
     end
   end

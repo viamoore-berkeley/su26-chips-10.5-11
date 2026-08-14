@@ -26,6 +26,7 @@
 class NewsItem < ApplicationRecord
   belongs_to :user
   belongs_to :representative
+  has_many :ratings, dependent: :destroy
 
   def self.issues
     ['Free Speech', 'Immigration', 'Terrorism', 'Social Security and Medicare',
@@ -36,7 +37,7 @@ class NewsItem < ApplicationRecord
   validate def val_issue
     return if issue.blank?
 
-    return if NewsItem.issues.include(issue)
+    return if NewsItem.issues.include?(issue)
 
     errors.add(:issue, 'Not a valid Issue!')
   end
@@ -64,5 +65,16 @@ class NewsItem < ApplicationRecord
       }
     )
     JSON.parse(response.body)
+  end
+
+  def average_rating
+    ratings.average(:value)&.to_f&.round(1)
+  end
+
+  def rate(user, value)
+    rating = ratings.find_or_initialize_by(user: user)
+    rating.value = value
+    rating.save
+    rating
   end
 end
