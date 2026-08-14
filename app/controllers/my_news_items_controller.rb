@@ -49,6 +49,18 @@ class MyNewsItemsController < ApplicationController
     end
   end
 
+  # Save an article chosen from the search results as a news item.
+  def save
+    @news_item = NewsItem.create_from_article(@representative, article_params)
+    if @news_item.persisted?
+      redirect_to representative_news_item_path(@representative, @news_item),
+                  notice: 'Article saved.'
+    else
+      redirect_to representative_news_items_path(@representative),
+                  alert: 'Could not save that article.'
+    end
+  end
+
   private
 
   def set_representative
@@ -67,5 +79,9 @@ class MyNewsItemsController < ApplicationController
 
   def news_item_params
     params.require(:news_item).permit(:title, :issue, :description, :link, :representative_id)
+  end
+
+  def article_params
+    params.permit(:title, :link, :description, :issue)
   end
 end

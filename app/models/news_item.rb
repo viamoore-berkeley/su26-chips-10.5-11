@@ -43,6 +43,16 @@ class NewsItem < ApplicationRecord
     )
   end
 
+  # Save an article chosen from a news search as a news item for the given
+  # representative, deduped by link so the same article isn't saved twice.
+  def self.create_from_article(representative, article)
+    representative.news_items.find_or_create_by(link: article[:link]) do |item|
+      item.title = article[:title]
+      item.description = article[:description]
+      item.issue = article[:issue]
+    end
+  end
+
   def average_rating
     ratings.average(:value)&.to_f&.round(1)
   end

@@ -69,4 +69,25 @@ describe MyNewsItemsController do
       end.to change(NewsItem, :count).by(-1)
     end
   end
+
+  describe 'POST save' do
+    it 'saves the selected article as a news item' do
+      expect { post_save }.to change(NewsItem, :count).by(1)
+    end
+
+    it 'does not save the same article twice' do
+      post_save
+      expect { post_save }.not_to(change(NewsItem, :count))
+    end
+  end
+
+  def post_save
+    post :save, params: {
+      representative_id: @rep.id,
+      title: 'Saved Title',
+      link: 'https://example.com/saved-article',
+      description: 'A description',
+      issue: 'Immigration'
+    }
+  end
 end
