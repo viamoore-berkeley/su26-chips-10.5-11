@@ -48,10 +48,6 @@ class NewsItem < ApplicationRecord
       user_id: user_id
     )
   end
-  
-  def top_five
-    NewsItem.first(5)
-  end
 
   # Save an article chosen from a news search as a news item for the given
   # representative + user, deduped by link so the same article isn't saved twice.
@@ -65,6 +61,24 @@ class NewsItem < ApplicationRecord
   end
 
   def self.currents_search(query)
+    currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
+    raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
+
+    response = Faraday.get(
+      'https://api.currentsapi.services/v1/search',
+      {
+        keywords: query,
+        language: 'en',
+        page_size: 5
+      },
+      {
+        'Authorization' => "Bearer #{currents_api_key}"
+      }
+    )
+    JSON.parse(response.body)
+  end
+
+  def top_five
     currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
     raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
 
