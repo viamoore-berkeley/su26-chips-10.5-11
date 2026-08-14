@@ -43,6 +43,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_11_042626) do
     t.index ["representative_id"], name: "index_news_items_on_representative_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "news_item_id", null: false
+    t.integer "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["news_item_id"], name: "index_ratings_on_news_item_id"
+    t.index ["user_id", "news_item_id"], name: "index_ratings_on_user_id_and_news_item_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "representatives", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -84,4 +95,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_11_042626) do
     t.datetime "updated_at", null: false
     t.index ["uid", "provider"], name: "index_users_on_uid_provider", unique: true
   end
+
+  add_foreign_key "ratings", "news_items"
+  add_foreign_key "ratings", "users"
 end
