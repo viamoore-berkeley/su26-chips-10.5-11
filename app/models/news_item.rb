@@ -78,24 +78,6 @@ class NewsItem < ApplicationRecord
     JSON.parse(response.body)
   end
 
-  def self.top_five(query)
-    currents_api_key = ENV.fetch('CURRENTS_API_KEY', Rails.application.credentials[:CURRENTS_API_KEY])
-    raise ArgumentError, 'Missing CURRENTS_API_KEY' if currents_api_key.blank?
-
-    response = Faraday.get(
-      'https://api.currentsapi.services/v1/search',
-      {
-        keywords: query,
-        language: 'en',
-        page_size: 5
-      },
-      {
-        'Authorization' => "Bearer #{currents_api_key}"
-      }
-    )
-    JSON.parse(response.body)
-  end
-
   def average_rating
     ratings.average(:value)&.to_f&.round(1)
   end
