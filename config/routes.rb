@@ -34,21 +34,15 @@ Rails.application.routes.draw do
       end
     end
   end
-<<<<<<< HEAD
-
   resources :my_news_items do
     collection do
       get :new_search
     end
   end
-
   get '/my_news_items/new_search' => 'my_news_items#new_search',
     :as => :new_search_my_news_item
-
-=======
   get '/representatives/:representative_id/my_news_item/search' => 'my_news_items#search', 
     as: :representative_search_my_news_item
->>>>>>> ac475e8 (pulling from main)
   get '/representatives/:representative_id/my_news_item/new' => 'my_news_items#new',
       :as                                                     => :representative_new_my_news_item
   post '/representatives/:representative_id/my_news_item/new', to: 'my_news_items#create'

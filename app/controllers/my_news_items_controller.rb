@@ -28,7 +28,6 @@ class MyNewsItemsController < ApplicationController
   def edit; end
 
   def create
-   
     @news_item = NewsItem.new(news_item_params)
     @news_item.representative_id = @representative.id
     @news_item.user_id = current_user&.id
