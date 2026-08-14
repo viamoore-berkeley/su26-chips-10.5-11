@@ -20,6 +20,7 @@
 class NewsItem < ApplicationRecord
   # TODO: this belongs to a user (creator_id)
   belongs_to :representative
+  has_many :ratings, dependent: :destroy
 
   # Lists of issues
   def self.issues
@@ -31,7 +32,7 @@ class NewsItem < ApplicationRecord
   validate def val_issue
     return if issue.blank?
 
-    return if NewsItem.issues.include(issue)
+    return if NewsItem.issues.include?(issue)
 
     errors.add(:issue, 'Not a valid Issue!')
   end
@@ -40,5 +41,16 @@ class NewsItem < ApplicationRecord
     NewsItem.find_by(
       representative_id: representative_id
     )
+  end
+
+  def average_rating
+    ratings.average(:value)&.to_f&.round(1)
+  end
+
+  def rate(user, value)
+    rating = ratings.find_or_initialize_by(user: user)
+    rating.value = value
+    rating.save
+    rating
   end
 end
