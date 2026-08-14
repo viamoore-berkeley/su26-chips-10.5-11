@@ -48,6 +48,10 @@ class NewsItem < ApplicationRecord
       user_id: user_id
     )
   end
+  
+  def top_five
+    NewsItem.first(5)
+  end
 
   # Save an article chosen from a news search as a news item for the given
   # representative + user, deduped by link so the same article isn't saved twice.
