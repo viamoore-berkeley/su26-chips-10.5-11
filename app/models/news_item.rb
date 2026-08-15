@@ -52,11 +52,11 @@ class NewsItem < ApplicationRecord
   # Save an article chosen from a news search as a news item for the given
   # representative + user, deduped by link so the same article isn't saved twice.
   def self.create_from_article(representative, user, article)
-    representative.news_items.find_or_create_by(link: article[:link]) do |item|
+    representative.news_items.find_or_create_by(link: article['url']) do |item|
       item.user = user
-      item.title = article[:title]
-      item.description = article[:description]
-      item.issue = article[:issue]
+      item.title = article['title']
+      item.description = article['description']
+      # item.issue = article[:issue]
     end
   end
 

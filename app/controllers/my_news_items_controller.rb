@@ -59,7 +59,8 @@ class MyNewsItemsController < ApplicationController
   def search
     @issue = params[:issue]
     @representative = Representative.find(params[:representative_id])
-    search_for = "#{@representative.name} #{@issue}"
+    # search_for = "#{@representative.name} #{@issue}"
+    search_for = @issue.to_s
     ans = NewsItem.currents_search(search_for)
     @articles = ans['news'] || []
     render :search
@@ -67,7 +68,14 @@ class MyNewsItemsController < ApplicationController
 
   # Save an article chosen from the search results as a news item.
   def save
-    @news_item = NewsItem.create_from_article(@representative, current_user, article_params)
+    article = JSON.parse(params[:article])
+
+    @news_item = NewsItem.create_from_article(
+      @representative,
+      current_user,
+      article
+    )
+
     if @news_item.persisted?
       redirect_to representative_news_item_path(@representative, @news_item),
                   notice: 'Article saved.'
@@ -98,6 +106,6 @@ class MyNewsItemsController < ApplicationController
   end
 
   def article_params
-    params.permit(:title, :link, :description, :issue)
+    params.permit(:article, :title, :link, :description, :issue)
   end
 end
