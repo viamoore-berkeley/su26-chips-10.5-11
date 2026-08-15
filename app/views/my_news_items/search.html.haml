@@ -1,8 +1,13 @@
 .row
   .col-12.col-md-6.offset-md-3.col-xl-4.offset-xl-4
     %h1.text-center Top 5 News Articles
-
-  .col-12.col-md-6.offset-md-3.col-xl-4.offset-xl-4
+    %p
+      Representative:
+      = link_to @representative.name, representative_path(@representative), target: '_blank', rel: 'noopener'
+    %p
+      Issue:
+      = @issue
+  .col-10.col-md-8.offset-md-2.col-xl-8.offset-xl-2
     = form_with url: representative_save_my_news_item_path(@representative), method: :post do |f|
       - @articles.each do |article|
         %label.d-block.mb-4

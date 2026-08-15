@@ -99,12 +99,15 @@ describe MyNewsItemsController do
   end
 
   def post_save
-    post :save, params: {
+    params = {
       representative_id: @rep.id,
-      title: 'Saved Title',
-      link: 'https://example.com/saved-article',
-      description: 'A description',
-      issue: 'Immigration'
+      article: {
+        title: 'Saved Title',
+        url: 'https://example.com/saved-article',
+        description: 'A description',
+        issue: 'Immigration'
+      }.to_json
     }
+    post :save, params: params
   end
 end
