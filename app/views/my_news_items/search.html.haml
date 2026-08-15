@@ -9,7 +9,7 @@
           = radio_button_tag 'article', article.to_json
           %strong= article['title']
           %p= article['description']
-          %p= link_to 'Read Article', article['url'], target: '_blank'
+          %p= link_to 'Read Article', article['url'], target: '_blank', rel: 'noopener'
 
       = f.submit 'Save', class: 'btn btn-primary'
 

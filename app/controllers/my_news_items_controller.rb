@@ -60,7 +60,7 @@ class MyNewsItemsController < ApplicationController
     @issue = params[:issue]
     @representative = Representative.find(params[:representative_id])
     # search_for = "#{@representative.name} #{@issue}"
-    search_for = "#{@issue}"
+    search_for = @issue.to_s
     ans = NewsItem.currents_search(search_for)
     @articles = ans['news'] || []
     render :search
